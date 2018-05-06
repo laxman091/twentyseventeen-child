@@ -19,7 +19,6 @@ wp_head();
 <div class="container">
   <h2>Checkout</h2>
   
-
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" id="tab_login" href="#login">Login</a></li>
     <li><a data-toggle="tab" id="tab_coupon" href="#coupon">Coupon</a></li>
