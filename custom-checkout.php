@@ -17,7 +17,11 @@ wp_head();
 <body>
 
 <div class="container">
+<<<<<<< HEAD
   <h2>Checkout123</h2>
+=======
+  <h2>Checkoutmaster</h2>
+>>>>>>> 4f81ce2dd601062bc842fb2202ee743673662241
   
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" id="tab_login" href="#login">Login</a></li>
