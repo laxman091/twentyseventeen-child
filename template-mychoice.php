@@ -342,6 +342,7 @@ jQuery(document).ready(function($) {
 <h4 class="s-quz-b-txt3	">Your style is personal. We never share information.</h4>
 </div>
 <?php
+echo 'test';
 /*echo 'test';
 $product_terms = get_the_terms(1939, 'pa_pattern');
 print_r($product_terms);
