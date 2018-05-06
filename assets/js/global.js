@@ -54,4 +54,28 @@ jQuery(document).ready(function($){
 
 	});
 
+// google address copy event
+$('.get_google_address').change(function() {
+        if($(this).is(":checked")) {
+            var returnVal = confirm("Are you sure?");
+            $(this).attr("checked", returnVal);
+            var locality = $('#locality').val();
+            var city = $('#administrative_area_level_1').val();
+            var postal_code = $('#postal_code').val();
+            var country = $('#country').val();
+            var addressString = locality + ' , ' + city + ' , ' + postal_code + ' , ' + country;
+            $('#google_address').val(addressString);
+
+            alert(addressString);
+
+        }
+        //$('#textbox1').val($(this).is(':checked'));        
+    });
+
+
+
+
+
+
+
 });	// jquery end here

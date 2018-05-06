@@ -22,6 +22,10 @@
     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
     <input id="user_address" type="text" class="form-control" name="user_address" placeholder="Address">
   </div>
+      <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input id="google_address" type="text" class="form-control" name="google_address" placeholder="Google Address">
+  </div>
   <div class="input-group">
     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
     <!--input id="user_country" type="text" class="form-control" name="user_country" placeholder="Country"-->
@@ -59,8 +63,10 @@
 
 </form>
 </div>
-<div class="col-sm-6">google map here
-  <?php get_template_part('', 'googlemap' ); ?>
+<div class="col-sm-6">
+<!-- google map start-->
+  <?php get_template_part('partials/navigation','googlemap'); ?>
+<!-- google map end-->
   </div>
 </div>
 
