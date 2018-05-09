@@ -554,9 +554,9 @@ add_action( 'edit_user_profile', 'google_print_user_admin_fields', 30 ); // admi
 
 add_action('admin_menu', 'my_menu_pages');
 function my_menu_pages(){
-    add_menu_page('My Page Title', 'My Menu', 'manage_options', 'my-menu', 'my_menu_output' );
-    add_submenu_page('my-menu', 'Submenu Page1', 'Theme', 'manage_options', 'theme-page', 'theme_page_function' );
-    add_submenu_page('my-menu', 'Submenu Page2', 'Plugin', 'manage_options', 'plugin-page', 'plugin_page_function' );
+    add_menu_page('My Page Title', 'My Control', 'manage_options', 'my-control', 'my_menu_output' );
+    add_submenu_page('my-control', 'Submenu Page1', 'Theme', 'manage_options', 'theme-page', 'theme_page_function' );
+    add_submenu_page('my-control', 'Submenu Page2', 'Plugin', 'manage_options', 'plugin-page', 'plugin_page_function' );
 }
 
 function my_menu_output(){

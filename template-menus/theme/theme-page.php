@@ -42,17 +42,7 @@ echo $value->name . '<br>';
 
 
 
-$all_plugins = get_plugins();
 
-foreach($all_plugins as $key=>$value){
-	//echo $key;
-	echo plugin_basename( $key );
-	//echo get_plugin_data( $key );
-echo '<pre>';
-//print_r($value);
-echo '</pre>';
-//echo $value[3];
-}
 
  ?>
 
