@@ -8,7 +8,8 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 
+        0%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -63,7 +64,7 @@
 
   <body>
     <div class="alert alert-success" style="display:none;">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> Google Address Copied...
 </div>
     <div class="checkbox">
   <label><input type="checkbox" value="" class="get_google_address">Copy Address from Google Map</label>
@@ -105,6 +106,9 @@
       </tr>
     </table>
 
+
+    <div id="map"></div>
+
     <script>
       // This example displays an address form, using the autocomplete feature
       // of the Google Places API to help users fill in the information.
@@ -124,6 +128,79 @@
       };
 
       function initAutocomplete() {
+
+        //initMap();
+        // show google map start
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 29.6856929, lng: 76.9904825},
+          zoom: 13,
+          mapTypeId: 'roadmap'
+        });
+
+        // Create the search box and link it to the UI element.
+        /*var input = document.getElementById('user_address');
+        var searchBox = new google.maps.places.SearchBox(input);
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        //new google.maps.places.Autocomplete(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+
+          if (places.length == 0) {
+            return;
+          }
+
+          // Clear out the old markers.
+          markers.forEach(function(marker) {
+            marker.setMap(null);
+          });
+          markers = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+              map: map,
+              icon: icon,
+              title: place.name,
+              position: place.geometry.location
+            }));
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
+        });*/
+
+    // show google map end
+
+
+
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
@@ -165,7 +242,8 @@
             var geolocation = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
-            };
+            }; console.log(geolocation.lat,geolocation.lng);
+            
             var circle = new google.maps.Circle({
               center: geolocation,
               radius: position.coords.accuracy
@@ -174,6 +252,8 @@
           });
         }
       }
+
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiTp11QRkeWqbqcBmuTfBhk1h0fdF3pnM&libraries=places&callback=initAutocomplete"
         async defer></script>

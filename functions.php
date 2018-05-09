@@ -1,7 +1,9 @@
 <?php
 
 function theme_js() {
+    wp_enqueue_style('child-theme', get_stylesheet_directory_uri() . '/style.css');
     wp_enqueue_script( 'theme_js', get_stylesheet_directory_uri() . '/assets/js/global.js', array( 'jquery' ), '1.0', false );
+    //wp_enqueue_script( 'theme_goolge_js', get_stylesheet_directory_uri() . '/assets/js/google.js', array( 'jquery' ), '1.0', false );
     wp_localize_script( 'theme_js', 'global', array(
         'ajax_url' => admin_url( 'admin-ajax.php' )
     ));
@@ -501,12 +503,14 @@ add_action( 'wp_ajax_nopriv_submit_billing_form_data', 'submit_billing_form_data
 add_action( 'wp_ajax_submit_billing_form_data', 'submit_billing_form_data' );
 
 function submit_billing_form_data() {
+    print_r($_POST);
     $current_user = wp_get_current_user();
         if ( !current_user_can( 'edit_user', $user_id ) )
         return false;
     update_user_meta($current_user->id,'billing_first_name',$_POST['first_name']);
     update_user_meta($current_user->id,'billing_last_name',$_POST['last_name']);
     update_user_meta($current_user->id,'billing_address_1',$_POST['user_address']);
+    update_user_meta($current_user->id,'google_address',$_POST['google_address']);
     update_user_meta($current_user->id,'billing_country',$_POST['my_country_field']);
     update_user_meta($current_user->id,'billing_email',$_POST['email']);
     wp_die();
@@ -516,7 +520,56 @@ function submit_billing_form_data() {
 
 
 
+/**
+ * Add fields to admin area.
+ */
+function google_print_user_admin_fields() {
+    //$fields = iconic_get_account_fields();
+    ?>
+    <h2><?php _e( 'Google Address & Information', 'google' ); ?></h2>
+    <table class="form-table">
+    <tr>
+        <th>
+    <label for="google Address"><?php _e("Google Address"); ?></label></th>
+    <td>
+    <input type="text" name="google_address" id="google_address" value="<?php echo esc_attr( get_the_author_meta( 'google_address', $user->ID ) ); ?>" class="regular-text" /></td></tr>
+    <tr>
+     <th><label for="google Address"><?php _e("Latitute"); ?></label></th>
+     <td><input type="text" name="google_address_lat" id="google_address_lat" value="<?php echo esc_attr( get_the_author_meta( 'google_address_lat', $user->ID ) ); ?>" class="regular-text" /></td>
+ </tr>
+     <tr>
+     <th><label for="google Address"><?php _e("Longitude"); ?></label></th>
+     <td><input type="text" name="google_address_lng" id="google_address_lng" value="<?php echo esc_attr( get_the_author_meta( 'google_address_lng', $user->ID ) ); ?>" class="regular-text" /></td>
+ </tr>
+</table>
+    <?php
+}
 
+add_action( 'show_user_profile', 'google_print_user_admin_fields', 30 ); // admin: edit profile
+add_action( 'edit_user_profile', 'google_print_user_admin_fields', 30 ); // admin: edit other users
+
+
+
+/*Add admin menu pages*/
+
+add_action('admin_menu', 'my_menu_pages');
+function my_menu_pages(){
+    add_menu_page('My Page Title', 'My Menu', 'manage_options', 'my-menu', 'my_menu_output' );
+    add_submenu_page('my-menu', 'Submenu Page1', 'Theme', 'manage_options', 'theme-page', 'theme_page_function' );
+    add_submenu_page('my-menu', 'Submenu Page2', 'Plugin', 'manage_options', 'plugin-page', 'plugin_page_function' );
+}
+
+function my_menu_output(){
+    echo 'home page';
+}
+
+function theme_page_function(){
+    get_template_part('template-menus/theme/theme','page');
+}
+
+function plugin_page_function(){
+    get_template_part('template-menus/plugin/plugin','page');
+}
 
 
 

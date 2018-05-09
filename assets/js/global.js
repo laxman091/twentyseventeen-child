@@ -10,7 +10,7 @@ jQuery(document).ready(function($){
 					coupon_code : coupon
 				},
 				success : function( response ) {
-					alert(response);
+					//alert(response);
 				}
 			});
 
@@ -47,7 +47,7 @@ jQuery(document).ready(function($){
 						formdata
 				},*/
 				success : function( response ) {
-					//alert(response);
+					alert(response);
 				}
 			});
 
@@ -65,8 +65,9 @@ $('.get_google_address').change(function() {
             var country = $('#country').val();
             var addressString = locality + ' , ' + city + ' , ' + postal_code + ' , ' + country;
             $('#google_address').val(addressString);
-
-            alert(addressString);
+            $('.alert-success').show('fast');
+            $(".alert-success").fadeOut(2500);
+            //alert(addressString);
 
         }
         //$('#textbox1').val($(this).is(':checked'));        
