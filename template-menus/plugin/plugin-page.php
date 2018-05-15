@@ -15,7 +15,7 @@
   <p>Resize the browser window to see the effect.</p>
   <div class="row">
     <div class="col-sm-2">
-    	
+   <form action=<?php echo $_SERVER['REQUEST_URI']; ?> method="post"> 	
 <div class="form-group">
   <label for="sel1">Options:</label>
   <select class="form-control" id="selectopt">
@@ -25,11 +25,18 @@
     <option id="remove">Remove/Delete</option>
   </select>
 </div>
-
+<input type="submit">
+</form>
     </div>
     <div class="col-sm-8">
-    	<?php 
+    	<?php
+if (!empty($_POST)):
 
+print_r($_POST);
+
+endif;
+$uri = $_SERVER['REQUEST_URI'];
+echo $uri;
 //To deactivate an installed plugin, just call:
 
 //deactivate_plugins( '/plugin-folder/plugin-name.php' );
@@ -70,41 +77,49 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
+      	<th><input type="checkbox" value=""></th>
+        <th>Plugin</th>
+        <th>Description</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>      
 
-<?php $all_plugins = get_plugins();
-foreach($all_plugins as $key=>$value){
+<?php
+//echo $plugins_url = plugins_url();
+//secho $dir = plugin_dir_path( __DIR__ );
+$all_plugins = get_plugins();
+foreach($all_plugins as $key=>$values){
 
 	//echo plugin_basename( $key );
 
 	// check for plugin using plugin name
 if ( is_plugin_active( plugin_basename( $key ) ) ) {
-    //plugin is activated
-    //echo 'activated'
-
- ?>
-<tr class="success">
-        <td>Active</td>
-        <td><?php echo plugin_basename( $key ) ?>
+?>
+<tr class="success leftborder" style="border-left: 4px solid #00a0d2;">
+	<td><input type="checkbox" value=""></td>
+        <td>Deactivate</td>
+        <td><?php echo plugin_basename( $key ); ?>
         </td>
         <td></td>
       </tr>
       <?php }
       else { ?> <tr class="danger">
-        <td>Deactive</td>
-        <td><?php echo plugin_basename( $key ) ?>
+      	<td><input type="checkbox" value=""></td>
+        <td>Activate</td>
+        <td><?php echo $key; echo '<pre>'; foreach ($values as $k=>$v) { echo $v.'<br>'; }   //get_plugin_data( $key); ?>
         </td>
         <td></td>
       </tr> <?php } } ?>
     </tbody>
   </table>
 
-    	
+<?php
+echo '<pre>';
+//print_r($all_plugins);
+echo '<pre>';
+//print_r($all_plugins->nam);
+?>    	
     </div>
   </div>
 </div>

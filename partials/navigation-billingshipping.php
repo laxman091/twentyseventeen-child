@@ -53,6 +53,9 @@
   <div class="input-group">
     <span class="input-group-addon">Message</span>
     <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info">
+	
+	<input id="latitude" type="text" class="form-control" name="latitude" value="">
+	<input id="longitude" type="text" class="form-control" name="longitude" value="">
   </div>
      <div class="input-group">
     <?php wp_nonce_field(); ?>

@@ -59,10 +59,15 @@
         margin-top: 13px;
         margin-bottom: 8px;
       }
+	  #map-layer {
+	margin: 20px 0px;
+	max-width: 600px;
+	min-height: 400;
+}
     </style>
   </head>
 
-  <body>
+  <body onload="geolocate()">
     <div class="alert alert-success" style="display:none;">
   <strong>Success!</strong> Google Address Copied...
 </div>
@@ -71,7 +76,7 @@
 </div>
     <div id="locationField">
       <input id="autocomplete" placeholder="Enter your address"
-             onFocus="geolocate()" type="text"></input>
+              type="text"></input>
     </div>
 
     <table id="address">
@@ -108,6 +113,7 @@
 
 
     <div id="map"></div>
+	<div id="map-layer"></div>
 
     <script>
       // This example displays an address form, using the autocomplete feature
@@ -126,76 +132,16 @@
         country: 'long_name',
         postal_code: 'short_name'
       };
+	  var map;
+	  var infoWindowHTML;
+	  var infoWindow;
+	  var currentLocation;
 
       function initAutocomplete() {
 
-        //initMap();
+
         // show google map start
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 29.6856929, lng: 76.9904825},
-          zoom: 13,
-          mapTypeId: 'roadmap'
-        });
 
-        // Create the search box and link it to the UI element.
-        /*var input = document.getElementById('user_address');
-        var searchBox = new google.maps.places.SearchBox(input);
-        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-        //new google.maps.places.Autocomplete(input);
-
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function() {
-          searchBox.setBounds(map.getBounds());
-        });
-
-        var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
-
-          if (places.length == 0) {
-            return;
-          }
-
-          // Clear out the old markers.
-          markers.forEach(function(marker) {
-            marker.setMap(null);
-          });
-          markers = [];
-
-          // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
-
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-              map: map,
-              icon: icon,
-              title: place.name,
-              position: place.geometry.location
-            }));
-
-            if (place.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-          });
-          map.fitBounds(bounds);
-        });*/
 
     // show google map end
 
@@ -215,8 +161,20 @@
       function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-
-        console.log(place);
+		console.log(place);
+		// get lat
+		var lat = place.geometry.location.lat();
+		// get lng
+		var lng = place.geometry.location.lng();
+        //console.log(lat + ' ' + lng);
+		
+				infoWindowHTML = "Latitude: " + lat + "<br>Longitude: " + lng;
+				infoWindow = new google.maps.InfoWindow({map: map, content: infoWindowHTML});
+				currentLocation = { lat: lat, lng: lng };
+				infoWindow.setPosition(currentLocation);
+		
+		
+		
 
         for (var component in componentForm) {
           document.getElementById(component).value = '';
@@ -237,12 +195,25 @@
       // Bias the autocomplete object to the user's geographical location,
       // as supplied by the browser's 'navigator.geolocation' object.
       function geolocate() {
+		  var mapLayer = document.getElementById("map-layer");
+		var centerCoordinates = new google.maps.LatLng(37.6, -95.665);
+		var defaultOptions = { center: centerCoordinates, zoom: 13 }
+
+		map = new google.maps.Map(mapLayer, defaultOptions);
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var geolocation = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
-            }; console.log(geolocation.lat,geolocation.lng);
+            };
+
+				var currentLatitude = position.coords.latitude;
+				var currentLongitude = position.coords.longitude;
+				infoWindowHTML = "Latitude: " + currentLatitude + "<br>Longitude: " + currentLongitude;
+				infoWindow = new google.maps.InfoWindow({map: map, content: infoWindowHTML});
+				currentLocation = { lat: geolocation.lat, lng: geolocation.lng };
+				infoWindow.setPosition(currentLocation);
+				console.log('on load: ' +geolocation.lat,geolocation.lng);
             
             var circle = new google.maps.Circle({
               center: geolocation,

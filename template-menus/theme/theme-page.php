@@ -32,22 +32,51 @@
 
     </div>
     <div class="col-sm-8">
+    	  <table class="table">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody> 
     	
 <?php
+$theme = wp_get_theme();	// gets the current theme
+//echo get_option( 'template' );	// gets the parent theme
+
 $themes = wp_get_themes();
 
+
 foreach($themes as $key=>$value){
-echo $value->name . '<br>';
+
+if ( $value->name == $theme || $value->name == $theme ) {
+?>
+<tr class="success">
+        <td><button type="button" class="btn btn-primary">Active</button></td>
+        <td><?php echo $value->name; ?>
+        </td>
+        <td></td>
+      </tr>
+<?php
+}
+else {
+?>
+
+<tr class="danger">
+        <td><button type="button" class="btn">Active</button></td>
+        <td><?php echo $value->name;; ?>
+        </td>
+        <td></td>
+      </tr>
+
+<?php
+}
 }
 
-
-
-
-
  ?>
-
-
-    </div>
+	 </div>
   </div>
 </div>
     
