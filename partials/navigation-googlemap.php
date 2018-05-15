@@ -161,7 +161,7 @@
       function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-		console.log(place);
+		//console.log(place);
 		// get lat
 		var lat = place.geometry.location.lat();
 		// get lng
