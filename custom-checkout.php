@@ -50,12 +50,14 @@ wp_head();
 
 
 <div class="row">
-    <div class="col-sm-12">
-        <?php echo do_shortcode('[products limit="4" columns="2" visibility="featured"]'); ?>
+    <div class="col-md-12">
+        <?php //echo do_shortcode('[products limit="4" columns="2" visibility="featured"]'); ?>
+		
         
     </div>
 </div>
 
+<div id="map"></div>
 
 </div>
 

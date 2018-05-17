@@ -1,5 +1,3 @@
-<?php 
-define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,10 +5,11 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-/* Always set the map height explicitly to define the size of the div
+      /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 
+        0%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -24,9 +23,6 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
       #locationField, #controls {
         position: relative;
         width: 480px;
-		height: 20px;
-        margin-top: 13px;
-        margin-bottom: 8px;
       }
       #autocomplete {
         position: absolute;
@@ -60,17 +56,50 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
       }
       #locationField {
         height: 20px;
-        margin-bottom: 2px;
+        margin-top: 13px;
+        margin-bottom: 8px;
       }
-	  #map{
-		  margin-top:25px
-	  }
+	  #map-layer {
+	margin: 20px 0px;
+	max-width: 600px;
+	min-height: 400;
+}
     </style>
+	<script>
+$(document).ready(function(){
+    $(".btnDistance").click(function(){
+        $('#modelWindow').modal('show');
+    });
+});
+</script>
   </head>
 
-  <body>
+  <body onload="geolocate()">
   
-      <div class="alert alert-success" style="display:none;">
+  
+  
+  
+  
+  <div class="modal fade" id="modelWindow" role="dialog">
+            <div class="modal-dialog modal-sm vertical-align-center">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Heading</h4>
+                </div>
+                <div class="modal-body">
+                    <?php get_template_part( 'partials/navigation', 'overlaymap' ); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+  
+  
+  
+    <div class="alert alert-success" style="display:none;">
   <strong>Success!</strong> Google Address Copied...
 </div>
     <div class="checkbox">
@@ -78,11 +107,11 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
   <button type="button" class="btn btn-primary btnDistance">Distance</button>
 </div>
 
- 		<div id="locationField">
+    <div id="locationField">
       <input id="autocomplete" placeholder="Enter your address"
-             onFocus="geolocate()" type="text"></input>
-    </div> 
-	
+              type="text"></input>
+    </div>
+
     <table id="address">
       <tr>
         <td class="label">Street address</td>
@@ -114,8 +143,11 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
               id="country" disabled="true"></input></td>
       </tr>
     </table>
-<!--div id="map"></div-->
-	
+
+
+    <div id="map"></div>
+	<div id="map-layer"></div>
+
     <script>
       // This example displays an address form, using the autocomplete feature
       // of the Google Places API to help users fill in the information.
@@ -133,8 +165,22 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
         country: 'long_name',
         postal_code: 'short_name'
       };
+	  var map;
+	  var infoWindowHTML;
+	  var infoWindow;
+	  var currentLocation;
 
       function initAutocomplete() {
+
+
+        // show google map start
+		var geocoder = new google.maps.Geocoder();
+		console.log('aa ' +geocoder);
+
+    // show google map end
+
+
+
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
@@ -144,11 +190,6 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
         autocomplete.addListener('place_changed', fillInAddress);
-		
-		var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.8688, lng: 151.2195},
-          zoom: 13
-        });
       }
 
       function fillInAddress() {
@@ -159,28 +200,15 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
 		var lat = place.geometry.location.lat();
 		// get lng
 		var lng = place.geometry.location.lng();
+        //console.log(lat + ' ' + lng);
 		
-		var myLatLng = {lat: lat, lng: lng};
-		 
-		var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: lat, lng: lng},
-          zoom: 13
-        });
+				infoWindowHTML = "Latitude: " + lat + "<br>Longitude: " + lng;
+				infoWindow = new google.maps.InfoWindow({map: map, content: infoWindowHTML});
+				currentLocation = { lat: lat, lng: lng };
+				infoWindow.setPosition(currentLocation);
 		
-        var infowindow = new google.maps.InfoWindow({
-          content: place.name
-        });
-
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map
-        });
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-		console.log(place);
-		console.log(place.name);
-		console.log(lat + ' ' + lng);
+		
+		
 
         for (var component in componentForm) {
           document.getElementById(component).value = '';
@@ -201,22 +229,39 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
       // Bias the autocomplete object to the user's geographical location,
       // as supplied by the browser's 'navigator.geolocation' object.
       function geolocate() {
+		  var mapLayer = document.getElementById("map-layer");
+		var centerCoordinates = new google.maps.LatLng(37.6, -95.665);
+		var defaultOptions = { center: centerCoordinates, zoom: 13 }
+
+		map = new google.maps.Map(mapLayer, defaultOptions);
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var geolocation = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+
+				var currentLatitude = position.coords.latitude;
+				var currentLongitude = position.coords.longitude;
+				infoWindowHTML = "Latitude: " + currentLatitude + "<br>Longitude: " + currentLongitude;
+				infoWindow = new google.maps.InfoWindow({map: map, content: infoWindowHTML});
+				currentLocation = { lat: geolocation.lat, lng: geolocation.lng };
+				infoWindow.setPosition(currentLocation);
+				console.log('on load: ' +geolocation.lat,geolocation.lng);
+            
             var circle = new google.maps.Circle({
               center: geolocation,
               radius: position.coords.accuracy
             });
             autocomplete.setBounds(circle.getBounds());
           });
+
         }
       }
+
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY&libraries=places&callback=initAutocomplete"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiTp11QRkeWqbqcBmuTfBhk1h0fdF3pnM&libraries=places&callback=initAutocomplete"
         async defer></script>
   </body>
 </html>

@@ -7,7 +7,7 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-/* Always set the map height explicitly to define the size of the div
+      /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
         height: 100%;
@@ -24,9 +24,6 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
       #locationField, #controls {
         position: relative;
         width: 480px;
-		height: 20px;
-        margin-top: 13px;
-        margin-bottom: 8px;
       }
       #autocomplete {
         position: absolute;
@@ -62,27 +59,15 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
         height: 20px;
         margin-bottom: 2px;
       }
-	  #map{
-		  margin-top:25px
-	  }
     </style>
   </head>
 
   <body>
-  
-      <div class="alert alert-success" style="display:none;">
-  <strong>Success!</strong> Google Address Copied...
-</div>
-    <div class="checkbox">
-  <label><input type="checkbox" value="" class="get_google_address">Copy Address from Google Map</label>
-  <button type="button" class="btn btn-primary btnDistance">Distance</button>
-</div>
-
- 		<div id="locationField">
+    <div id="locationField">
       <input id="autocomplete" placeholder="Enter your address"
              onFocus="geolocate()" type="text"></input>
-    </div> 
-	
+    </div>
+
     <table id="address">
       <tr>
         <td class="label">Street address</td>
@@ -114,7 +99,7 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
               id="country" disabled="true"></input></td>
       </tr>
     </table>
-<!--div id="map"></div-->
+<div id="map"></div>
 	
     <script>
       // This example displays an address form, using the autocomplete feature
@@ -154,12 +139,8 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
       function fillInAddress() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-		//console.log(place);
-		// get lat
 		var lat = place.geometry.location.lat();
-		// get lng
 		var lng = place.geometry.location.lng();
-		
 		var myLatLng = {lat: lat, lng: lng};
 		 
 		var map = new google.maps.Map(document.getElementById('map'), {
