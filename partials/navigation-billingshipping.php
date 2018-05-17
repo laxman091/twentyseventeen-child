@@ -58,7 +58,7 @@
 	<input id="longitude" type="text" class="form-control" name="longitude" value="">
   </div>
      <div class="input-group">
-    <?php wp_nonce_field(); ?>
+    <?php //wp_nonce_field(); ?>
   </div>
     <div class="form-group">
       <button type="button" class="btn btn-danger btn_customer_details">Save</button>

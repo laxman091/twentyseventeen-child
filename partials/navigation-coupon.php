@@ -1,6 +1,6 @@
       <h3>Enter Coupon code to apply in this order</h3>
       <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-3">
     <form>
     <div class="form-group">
       

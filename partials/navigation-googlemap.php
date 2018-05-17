@@ -23,10 +23,10 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
     <style>
       #locationField, #controls {
         position: relative;
-        width: 480px;
+        width: 484px;
 		height: 20px;
         margin-top: 13px;
-        margin-bottom: 8px;
+        margin-bottom: 7px;
       }
       #autocomplete {
         position: absolute;
@@ -60,25 +60,43 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
       }
       #locationField {
         height: 20px;
-        margin-bottom: 2px;
       }
 	  #map{
 		  margin-top:25px
 	  }
+	  div#alert-danger {
+    margin-top: 50px;
+	}
+
+	.modal-dialog {
+	  width: 100%;
+	  height: 100%;
+	  margin: 0;
+	  padding: 0;
+	}
+
+	.modal-content {
+	  height: auto;
+	  min-height: 100%;
+	  border-radius: 0;
+	}
     </style>
   </head>
 
   <body>
   
-      <div class="alert alert-success" style="display:none;">
+<div class="alert alert-success" style="display:none;">
   <strong>Success!</strong> Google Address Copied...
 </div>
-    <div class="checkbox">
+
+  <div class="checkbox">
   <label><input type="checkbox" value="" class="get_google_address">Copy Address from Google Map</label>
-  <button type="button" class="btn btn-primary btnDistance">Distance</button>
+  <!--button type="button" class="btn btn-primary btnDistance">Distance</button-->
+    <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Google Map</button>
 </div>
 
- 		<div id="locationField">
+ 	<div id="locationField">
       <input id="autocomplete" placeholder="Enter your address"
              onFocus="geolocate()" type="text"></input>
     </div> 
@@ -114,6 +132,13 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
               id="country" disabled="true"></input></td>
       </tr>
     </table>
+	
+	<div class="alert alert-danger" id="alert-danger" style="display:none;">
+	  <strong>Sorry</strong>, your browser does not support Web Storage...
+	</div>
+	
+	<?php get_template_part( 'partials/navigation', 'modal' ); ?>
+
 <!--div id="map"></div-->
 	
     <script>
@@ -161,6 +186,29 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
 		var lng = place.geometry.location.lng();
 		
 		var myLatLng = {lat: lat, lng: lng};
+		
+		//console.log(place);
+		//console.log(place.name);
+		//console.log(place.formatted_address);
+		//console.log(place.name);
+		//console.log(lat + ' ' + lng);
+		var contentString = 'Address: ' + place.formatted_address;
+		
+		// Check browser support
+		if (typeof(Storage) !== "undefined") {
+			// Store
+		localStorage.setItem("google_address", place.formatted_address);
+			// Retrieve
+			//document.getElementById("result").innerHTML = localStorage.getItem("google_address");
+		} else {
+			document.getElementById("google_address").innerHTML = "Sorry, your browser does not support Web Storage...";
+			$(".alert-danger").show('fast');
+			
+		}
+		
+		
+		// Retrieve
+		//document.getElementById("result").innerHTML = localStorage.getItem("google_address");
 		 
 		var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: lat, lng: lng},
@@ -168,7 +216,7 @@ define("API_KEY","AIzaSyDgS2pbNfDwDRy1nM3VNIiMBGmcLa-H0EY") ?>
         });
 		
         var infowindow = new google.maps.InfoWindow({
-          content: place.name
+          content: contentString
         });
 
         var marker = new google.maps.Marker({
