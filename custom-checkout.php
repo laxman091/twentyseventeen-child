@@ -52,8 +52,6 @@ wp_head();
 <div class="row">
     <div class="col-md-12">
         <?php //echo do_shortcode('[products limit="4" columns="2" visibility="featured"]'); ?>
-		
-        
     </div>
 </div>
 
